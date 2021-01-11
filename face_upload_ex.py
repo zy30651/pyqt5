@@ -17,7 +17,7 @@ class face_upload_ex(QtWidgets.QMainWindow, face_upload.Ui_MainWindow):
     def __init__(self, parent=None):
         super(face_upload_ex, self).__init__(parent)
         self.__index = 0
-        self.face_encode = ''
+        self.face_encoding = ''
         self.setupUi(self)
         self.updateUI()
 
@@ -33,20 +33,20 @@ class face_upload_ex(QtWidgets.QMainWindow, face_upload.Ui_MainWindow):
         print("已清空")
 
     def data_upload(self):
-            # data = {
-            #     "face_encoding": self.face_encoding,
-            #     "custom_name": self.custom_name.text(),
-            #     "custom_id": self.custom_id.text(),
-            #     "select_school": self.select_school.currentText()
-            # }
-            # print(data)
-            # headers = {'content-type': 'application/json',
-            #            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0'}
-            # r = requests.post(url, data)
-            r = requests.get(URL)
-            print(r)
+        # data = {
+        #     "face_encoding": self.face_encoding,
+        #     "custom_name": self.custom_name.text(),
+        #     "custom_id": self.custom_id.text(),
+        #     "select_school": self.select_school.currentText()
+        # }
+        # print(data)
+        # headers = {'content-type': 'application/json',
+        #            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0'}
+        # r = requests.post(url, data)
+        r = requests.get(URL)
+        print(r)
 
-            QMessageBox.warning(self, "图片上传", "上传成功！", QMessageBox.Yes)
+        QMessageBox.warning(self, "图片上传", "上传成功！", QMessageBox.Yes)
 
     def open_image(self, e):
         img_name, img_type = QFileDialog.getOpenFileName(self, "打开图片", "", "*.png;;*.jpg")
@@ -57,13 +57,14 @@ class face_upload_ex(QtWidgets.QMainWindow, face_upload.Ui_MainWindow):
             self.upload_face.setPixmap(img)
             a_images = face_recognition.load_image_file(img_name)
             self.face_encoding = face_recognition.face_encodings(a_images)[0]
+            print(self.face_encoding)
 
 
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QMainWindow()
-    ui = face_upload_ex()
-    ui.setupUi(Dialog)
-    ui.updateUI()
-    Dialog.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QtWidgets.QApplication(sys.argv)
+#     Dialog = QtWidgets.QMainWindow()
+#     ui = face_upload_ex()
+#     ui.setupUi(Dialog)
+#     ui.updateUI()
+#     Dialog.show()
+#     sys.exit(app.exec_())
