@@ -7,8 +7,16 @@ pymysql.install_as_MySQLdb()
 
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 import pandas as pd
-import import_excel, sys
+from CheckFace import import_excel
+import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
+
+db_server = "172.17.129.75"
+username = "renee"
+pwd = "QG3S)Of+"
+db = "oliveproduct"
+# db_table_name = "t_product_category"
+db_table_name = "t_product_template"
 
 
 class import_excel_ex(QtWidgets.QMainWindow, import_excel.Ui_MainWindow):
@@ -26,11 +34,16 @@ class import_excel_ex(QtWidgets.QMainWindow, import_excel.Ui_MainWindow):
 
     def updateUI(self):
         self.port_name.setValidator(QIntValidator(0, 99999))
-        self.server_name.setInputMask('000.000.000.000;')
+        self.server_name.setText("127.0.0.1")
         self.connect_btn.clicked.connect(self.connect_mysql)
         self.import_btn.clicked.connect(self.import_click)
         self.open_btn.clicked.connect(self.open_click)
         self.sheet_list.clicked.connect(self.sheet_click)
+
+        self.server_name.setText(db_server)
+        self.db_name.setText(db)
+        self.user_name.setText(username)
+        self.pwd_name.setText(pwd)
 
     def connect_mysql(self):
         if self.import_btn.isEnabled():
@@ -103,40 +116,39 @@ class import_excel_ex(QtWidgets.QMainWindow, import_excel.Ui_MainWindow):
         start_time = QTime.currentTime()
         # 建表语句
         df = self.data.parse(self.sheet_name)
-        table_name = 't_teacher'
-        sql_createtable = "CREATE TABLE IF NOT EXISTS `" + table_name + "`("
-        sql_createtable_word = ""
-        for n in range(len(self.sheet_titles)):
-            if n == len(self.sheet_titles)-1:
-                sql_createtable_word += "`" + str(self.sheet_titles[n]) + "`" + " varchar(255))"
-            else:
-                sql_createtable_word += "`" + str(self.sheet_titles[n]) + "`" + " varchar(255),"
-
-            # if self.sheet_titles[n] != '':
-            #     sql_createtable_word += "`" + str(self.sheet_titles[n]) + "`" + " varchar(255),"
-            # else:
-            #     sql_createtable_word += "`" + str(n) + "`" + " varchar(255),"
-
-        sql_createtable += sql_createtable_word
-        print("sql: %s" % sql_createtable)
-
-        # 执行SQL语句建表，如果表不存在
-        cur = self.conn.cursor()
-        try:
-            cur.execute(sql_createtable)
-        except BaseException as e:
-            QMessageBox.about(self, 'error', str(e))
+        # table_name = 't_product_category'
+        table_name = db_table_name
+        # sql_createtable = "CREATE TABLE IF NOT EXISTS `" + table_name + "`("
+        # sql_createtable_word = ""
+        # for n in range(len(self.sheet_titles)):
+        #     if n == len(self.sheet_titles)-1:
+        #         sql_createtable_word += "`" + str(self.sheet_titles[n]) + "`" + " varchar(255))"
+        #     else:
+        #         sql_createtable_word += "`" + str(self.sheet_titles[n]) + "`" + " varchar(255),"
+        #
+        # sql_createtable += sql_createtable_word
+        # print("sql: %s" % sql_createtable)
+        #
+        # # 执行SQL语句建表，如果表不存在
+        # cur = self.conn.cursor()
+        # try:
+        #     cur.execute(sql_createtable)
+        # except BaseException as e:
+        #     QMessageBox.about(self, 'error', str(e))
 
         # 插入语句
         sql_insert_array = []
+        # 常规用
         sql_insert_table_temp = "INSERT INTO `" + table_name + "`VALUES ("
         x = 0
         while x < len(df.values):
             print('_'*30)
             # 如果x小于行数
             sql_insert_word = ""
-            for y in df.values[x]:
-                if y is df.values[x][-1]:
+            temp_list = df.values[x].tolist()
+            for index, y in enumerate(temp_list):
+                print('%s:%s' % (index, y))
+                if index is len(temp_list)-1:
                     sql_insert_word = sql_insert_word + "'" + str(y)
                 else:
                     sql_insert_word = sql_insert_word + "'" + str(y) + "',"

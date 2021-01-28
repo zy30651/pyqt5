@@ -1,6 +1,5 @@
 # 实现一个小应用，
-
-import face_upload
+from CheckFace import face_upload
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import *
 import sys

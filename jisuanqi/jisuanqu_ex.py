@@ -1,4 +1,4 @@
-import jisuanqi1
+from jisuanqi import jisuanqi1
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 

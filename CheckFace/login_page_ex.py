@@ -1,10 +1,9 @@
-import login_page
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import *
 import sys
 import json
 import requests
-import face_view_ex
+from CheckFace import face_view_ex, login_page
 
 login_url = 'https://ssl.renee-arts.com/sps/api/v1/login'
 me_url = 'https://ssl.renee-arts.com/sps//api/v1/user/me'

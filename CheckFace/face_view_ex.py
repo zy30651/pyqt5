@@ -1,8 +1,7 @@
 import json
 from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QPushButton, QMessageBox
-import face_upload_ex, import_excel_ex
-import face_view
+from CheckFace import  face_view, face_upload_ex, import_excel_ex
 import requests
 """
 1：从服务器拿数据，tableView展示
